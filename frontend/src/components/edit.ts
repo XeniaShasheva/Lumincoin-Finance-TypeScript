@@ -63,7 +63,7 @@ export class Edit {
     }
 
 
-   async create() {
+  private async create(): Promise<void> {
        try {
            const response: EditAllType = await CustomHttp.request(config.host + '/operations/' + this.routeParams.id,
                'PUT', {
@@ -79,7 +79,8 @@ export class Edit {
            }
            location.href = '#/all'
        } catch (error) {
-           return console.log(error);
+           console.log(error);
+           return
        }
     }
 }

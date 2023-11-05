@@ -1,6 +1,4 @@
 import {Balance} from "../utils/balanse";
-import {elements} from "chart.js";
-
 
 export class Sidebar {
     private navLinks: HTMLCollectionOf<Element>;

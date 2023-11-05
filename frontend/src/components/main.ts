@@ -54,7 +54,7 @@ export class Main{
         this.amountsExpense = [];
         this.sorting();
     }
-    async init(dataId = this.dateInterval){
+    private async init(dataId = this.dateInterval): Promise<void>{
         try{
             const result = await CustomHttp.request(config.host+'/operations?period=interval&dateFrom=' + dataId);
             if(result){
@@ -85,7 +85,7 @@ export class Main{
             console.log(error);
         }
     }
-    canvas(){
+    private canvas(): void{
         for(let i =0; i<this.result.length;i++){
             if(this.result[i].type === 'expense'){
                 this.expense.push(this.result[i]);
@@ -100,7 +100,7 @@ export class Main{
         this.showChar(this.amountsIncome,this.dataIncome,this.contextIncome);
     }
 
-    sorting(){
+   private sorting(): void{
         const that: Main = this
         let data = new Date();
         this.init(this.dateInterval);
@@ -160,7 +160,7 @@ export class Main{
 
     }
 
-    showChar(amountsExpense,dataExpense, context){
+    private showChar(amountsExpense,dataExpense, context): void{
         let data  = {
             labels: dataExpense,
             datasets:[{
@@ -182,7 +182,7 @@ export class Main{
         let chart = new Chart(context,config);
     }
 
-    sort(type,arr){
+    private sort(type,arr): void{
         let holder = {};
         arr.forEach(function(d) {
             if (holder.hasOwnProperty(d.category)) {

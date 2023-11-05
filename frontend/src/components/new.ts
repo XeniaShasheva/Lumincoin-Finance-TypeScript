@@ -5,7 +5,7 @@ import config from "../../config/config";
 
 export class New {
     readonly page: 'createIncome' |'createExpense';
-    private categories: HTMLElement | null;
+    private categories: HTMLElement | null | [];
     readonly input: HTMLCollectionOf<any>;
     private itmType: HTMLCollectionOf<Element>;
     private id: string;
@@ -34,8 +34,8 @@ export class New {
     }
 
 
-    createErn(){
-        let create = document.getElementById('create')
+    private createErn(): void{
+        let create: HTMLElement | null = document.getElementById('create')
         this.showTitle('Создание дохода', 'доход')
         this.itmTyp('income')
         let that = this
@@ -46,8 +46,8 @@ export class New {
         }
 
     }
-    createCom(){
-        let create = document.getElementById('create')
+    private createCom(): void{
+        let create: HTMLElement | null = document.getElementById('create')
         this.showTitle('Создание расхода','расход')
         this.itmTyp('expense')
         let that = this
@@ -57,18 +57,14 @@ export class New {
             }
         }
     }
-    async itmTyp(data){
+    private async itmTyp(data): Promise<void>{
         try{
-
             const result = await CustomHttp.request(config.host+'/categories/'+ data)
-
             if(result){
                 if(result.error){
                     throw new Error(result.message)
                 }
-
                 this.categories = result
-
                 if(this.categories){
                     this.searchType()
                 }
@@ -77,43 +73,41 @@ export class New {
             console.log(e)
         }
     }
-    showTitle(text, type ){
+    private showTitle(text, type ): void{
         let input = this.input[0]
-        document.getElementById('content-title').innerText = text
+        (document.getElementById('content-title')as HTMLElement).innerText = text
         input.value = type
         input.setAttribute('disabled', 'disabled')
     }
-    cancel(){
-        document.getElementById('cancel').onclick = function () {
+    private cancel(): void{
+        (document.getElementById('cancel')as HTMLElement).onclick = function () {
             document.getElementById('form')
             location.href = '#/all'
         }
     }
-    searchType(){
+    private searchType(): void{
         let that =this
-
-
-        const result = document.getElementById('dropdown-menu')
+        const result: HTMLElement | null = document.getElementById('dropdown-menu')
         let content = ''
-
         this.categories.forEach((itm)=>{
             content +=`<li><div class="dropdown-item" id='${itm.id}'>${itm.title}</div></li>`
         })
-        result.innerHTML = content
+        if(result) {
+            result.innerHTML = content
+            for(let i = 0; i<this.itmType.length;i++){
+                this.itmType[i].onclick = function () {
+                    that.input[1].value = that.itmType[i].textContent
 
-
-        for(let i = 0; i<this.itmType.length;i++){
-            this.itmType[i].onclick = function () {
-                that.input[1].value = that.itmType[i].textContent
-
+                }
             }
         }
-    }
-    validateForm(){
-        let that =this
-        let create = document.getElementById('create')
 
-        let y = false
+    }
+    private validateForm(): void{
+        let that =this
+        let create: HTMLElement | null = document.getElementById('create')
+
+        let y: boolean = false
         for(let i = 0;i<this.input.length-1;i++){
             if(!that.input[i].value){
                 y = false
@@ -123,14 +117,17 @@ export class New {
             }
         }
         if(y === true){
-            create.removeAttribute('disabled')
+            if(create) {
+                create.removeAttribute('disabled');
+            }
+
         }
 
 
     }
-    async savingData(id,type,url,metod){
+    private async savingData(id,type,url,metod): Promise<void>{
         try{
-            const result = await CustomHttp.request(config.host+url,metod,{
+            const result = await CustomHttp.request(config.host + url,metod,{
                 type: type,
                 amount: this.input[2].value,
                 date: this.input[3].value,
@@ -147,10 +144,10 @@ export class New {
         }
     }
 
-    saveCategor(type){
-        let idcategor=null
-        for(let i = 0;i<this.categories.length;i++){
-            if(this.categories[i].title===type){
+    private saveCategor(type): object{
+        let idcategor: any = null
+        for(let i = 0; i < this.categories.length; i++){
+            if(this.categories[i].title === type){
                 idcategor= this.categories[i].id
                 break
             }
