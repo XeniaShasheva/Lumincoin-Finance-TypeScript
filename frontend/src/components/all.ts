@@ -3,8 +3,17 @@ import config from "../../config/config";
 
 
 export class All {
-  private static interval: any;
+  private interval: any;
   private all = [];
+  private yesElement: HTMLElement |null;
+  private noElement: HTMLElement |null;
+  private data: HTMLElement |null;
+  private Month: Number;
+  private dateInterval: String;
+  private dateTo: String;
+  private dateYear: any;
+  private dateMonth: String;
+  private dateDay: String;
 
     constructor() {
         let button: NodeListOf<any> = document.querySelectorAll('.btn-information')
@@ -14,7 +23,7 @@ export class All {
                     btn.style.backgroundColor='transparent'
                     btn.style.color='#6c757d'
                 })
-                this.style.backgroundColor='#6c757d'
+                this.style.backgroundColor ='#6c757d'
                 this.style.color='white'
             })
         })
@@ -34,7 +43,7 @@ export class All {
 
     }
 
-    async init(dataId = this.dateInterval) {
+   private async init(dataId: String = this.dateInterval): Promise<void> {
         try {
             const result = await CustomHttp.request(config.host + '/operations?period=interval&dateFrom=' + dataId);
             if (result) {
@@ -52,11 +61,10 @@ export class All {
             console.log(error);
         }
         this.delete()
-
     }
 
 
-    allProcess() {
+    private allProcess():void {
         const that = this;
         const result = document.getElementById('tbody')
         let content = ''
@@ -86,73 +94,96 @@ export class All {
             </td>
         </tr>`
         })
-        result.innerHTML = content
-
-        document.getElementById('createIncome').onclick = function () {
-            that.createIncome(this);
+        result.innerHTML = content;
+        let createIncome: HTMLElement | null = document.getElementById('createIncome');
+        if(createIncome) {
+            createIncome.onclick  = function () {
+                that.createIncome(this);
+            }
         }
 
-        document.getElementById('createExpense').onclick = function () {
-            that.createExpense(this);
+        let createExpense: HTMLElement | null = document.getElementById('createExpense');
+        if(createExpense) {
+            createExpense.onclick = function () {
+                that.createExpense(this);
+            }
         }
-
     }
 
-    createIncome() {
+    private createIncome(): void {
         location.href = '#/creationIncome';
     }
 
-    createExpense() {
+    private createExpense(): void {
         location.href = '#/creationExpense';
     }
 
 
-    sort() {
+    private sort(): void {
         const that = this;
         let date = new Date();
 
-        document.getElementById('today').onclick = function () {
-            that.interval = that.dateInterval;
-            that.init(that.interval);
+        let today: HTMLElement | null = document.getElementById('today');
+        if(today) {
+            today.onclick = function () {
+                that.interval = that.dateInterval;
+                that.init(that.interval);
+            }
         }
 
-        document.getElementById('week').onclick = function () {
-            let dateSort = new Date();
-            dateSort.setDate(date.getDate() - 7);
-            that.interval = dateSort.getFullYear() + '-' + dateSort.getMonth() + '-' + dateSort.getDate() + that.dateTo
-            that.init(that.interval);
+        let week: HTMLElement | null =  document.getElementById('week');
+        if(week) {
+            week.onclick = function () {
+                let dateSort = new Date();
+                dateSort.setDate(date.getDate() - 7);
+                that.interval = dateSort.getFullYear() + '-' + dateSort.getMonth() + '-' + dateSort.getDate() + that.dateTo
+                that.init(that.interval);
+            }
         }
 
-        document.getElementById('month').onclick = function () {
-            let dateSort = new Date();
-            dateSort.setMonth(date.getMonth() - 1);
+        let month: HTMLElement | null = document.getElementById('month');
+        if(month){
+            month.onclick = function () {
+                let dateSort = new Date();
+                dateSort.setMonth(date.getMonth() - 1);
 
-            that.interval = dateSort.getFullYear() + '-' + dateSort.getMonth() + '-' + dateSort.getDate() + that.dateTo
-            that.init(that.interval);
+                that.interval = dateSort.getFullYear() + '-' + dateSort.getMonth() + '-' + dateSort.getDate() + that.dateTo
+                that.init(that.interval);
+            }
         }
 
-        document.getElementById('year').onclick = function () {
-            that.interval = that.dateYear - 1 + '-' + that.dateMonth + '-' + that.dateDay + that.dateTo
-            that.init(that.interval);
+        let year: HTMLElement | null = document.getElementById('year');
+        if(year) {
+            year.onclick = function () {
+                that.interval = that.dateYear - 1 + '-' + that.dateMonth + '-' + that.dateDay + that.dateTo
+                that.init(that.interval);
+            }
         }
 
-        document.getElementById('allAll').onclick = function () {
-            that.interval = '1999-01-01&dateTo=2300-09-13'
-            that.init(that.interval);
+        let allAll: HTMLElement | null = document.getElementById('allAll');
+        if(allAll) {
+            allAll.onclick = function () {
+                that.interval = '1999-01-01&dateTo=2300-09-13'
+                that.init(that.interval);
+            }
         }
 
-        document.getElementById('interval').onclick = function () {
-            let dateFrom = document.getElementById('dateFrom').value;
-            let dateTo = document.getElementById('dateTo').value;
+        let interval: HTMLElement | null = document.getElementById('interval');
+        if(interval) {
+            interval.onclick = function () {
+                let dateFrom = (document.getElementById('dateFrom')as HTMLInputElement).value;
+                let dateTo = (document.getElementById('dateTo')as HTMLInputElement).value;
 
-            that.interval = dateFrom + '&dateTo=' + dateTo
-            that.init(that.interval);
+                that.interval = dateFrom + '&dateTo=' + dateTo
+                that.init(that.interval);
+            }
         }
+
 
     }
 
 
-    delete() {
+    private delete(): void {
         const that = this;
         let deleteElms =  document.getElementsByClassName('delete');
         for(let i=0;i<deleteElms.length;i++) {
@@ -165,36 +196,42 @@ export class All {
         }
     }
 
-    deleteActions(item) {
+    private deleteActions(item): void {
         const that = this;
-        let popup = document.getElementById('popup');
-        popup.style.display = 'block';
+        let popup: HTMLElement | null = document.getElementById('popup');
+        if(popup) {
+            popup.style.display = 'block';
+        }
         this.yesElement = document.getElementById('yes');
         this.noElement = document.getElementById('no');
-        this.yesElement.onclick = async function () {
-            const dataId = item.getAttribute('value');
-            try {
-                const result = await CustomHttp.request(config.host + '/operations/' + dataId, 'DELETE');
-                if (result) {
-                    if (result.error) {
-                        throw new Error(result.message);
+        if(this.yesElement) {
+            this.yesElement.onclick = async function () {
+                const dataId = item.getAttribute('value');
+                try {
+                    const result = await CustomHttp.request(config.host + '/operations/' + dataId, 'DELETE');
+                    if (result) {
+                        if (result.error) {
+                            throw new Error(result.message);
+                        }
+                        if(popup) {
+                            popup.style.display = 'none';
+                            that.init(that.interval);
+                        }
                     }
-                    popup.style.display = 'none';
-                    that.init(that.interval);
-
-
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
             }
         }
 
-        this.noElement.onclick = function () {
-            popup.style.display = 'none'
+        if (this.noElement) {
+            this.noElement.onclick = function () {
+                if(popup) {
+                    popup.style.display = 'none'
+                }
+            }
         }
+
     }
-
-
-
 
 }

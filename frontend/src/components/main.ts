@@ -1,9 +1,28 @@
-import {CustomHttp} from "../services/custom-http.js";
-import config from "../../config/config.js";
+import {CustomHttp} from "../services/custom-http";
+import config from "../../config/config";
 
 export class Main{
+    private result: HTMLElement | null;
+    private Month: Number;
+    readonly dateInterval: String;
+    private dateTo: String;
+    private dateYear: any;
+    private dateMonth: String;
+    private dateDay: String;
+    private canvasIncome: HTMLElement | null;
+    private contextIncome: HTMLElement | null;
+    private canvasExpense: HTMLElement | null;
+    private contextExpense: HTMLElement | null;
+    private expense: [];
+    private income: [];
+    private dataIncome: [];
+    private amountsIncome:[];
+    private dataExpense: [];
+    private amountsExpense:[];
+    private interval: any;
+
     constructor(){
-        let button = document.querySelectorAll('.btn-information')
+        let button: NodeListOf<any> = document.querySelectorAll('.btn-information')
         button.forEach((itm)=>{
             itm.addEventListener('click', function(){
                 button.forEach((btn)=>{
@@ -44,10 +63,10 @@ export class Main{
                 }
                 this.result = result;
 
-                document.getElementById('canvas1').innerHTML = ``
-                document.getElementById('canvas2').innerHTML = ``
-                document.getElementById('canvas1').innerHTML = `<canvas class="" id="income"></canvas>`;
-                document.getElementById('canvas2').innerHTML = `<canvas  id="expense"></canvas>`;
+                (document.getElementById('canvas1')as HTMLElement).innerHTML = ``
+                (document.getElementById('canvas2')as HTMLElement).innerHTML = ``
+                (document.getElementById('canvas1')as HTMLElement).innerHTML = `<canvas class="" id="income"></canvas>`;
+                (document.getElementById('canvas2')as HTMLElement).innerHTML = `<canvas  id="expense"></canvas>`;
 
                 this.canvasIncome = document.getElementById('income');
                 this.contextIncome = this.canvasIncome.getContext('2d');
@@ -82,44 +101,63 @@ export class Main{
     }
 
     sorting(){
-        const that = this
+        const that: Main = this
         let data = new Date();
         this.init(this.dateInterval);
 
-        document.getElementById('today').onclick = function () {
+        (document.getElementById('today')as HTMLElement).onclick = function () {
             that.interval = that.dateInterval;
             that.init(that.interval);
         }
 
-        document.getElementById('week').onclick = function () {
-            let startDate = new Date();
-            startDate.setDate(data.getDate() - 7);
-            that.interval = startDate.getFullYear()+'-'+startDate.getMonth()+'-'+startDate.getDate()+that.dateTo;
-            that.init(that.interval);
+        let week: HTMLElement | null =  document.getElementById('week');
+        if(week) {
+                week.onclick = function () {
+                let startDate = new Date();
+                startDate.setDate(data.getDate() - 7);
+                that.interval = startDate.getFullYear()+'-'+startDate.getMonth()+'-'+startDate.getDate()+that.dateTo;
+                that.init(that.interval);
+            }
         }
 
-        document.getElementById('month').onclick = function () {
-            let startDate = new Date();
-            startDate.setMonth(data.getMonth() - 1);
-            that.interval = startDate.getFullYear()+'-'+startDate.getMonth()+'-'+startDate.getDate()+that.dateTo;
-            that.init(that.interval);
+        let month: HTMLElement |null = document.getElementById('month');
+        if (month) {
+                month.onclick = function () {
+                let startDate = new Date();
+                startDate.setMonth(data.getMonth() - 1);
+                that.interval = startDate.getFullYear()+'-'+startDate.getMonth()+'-'+startDate.getDate()+that.dateTo;
+                that.init(that.interval);
+            }
         }
-        document.getElementById('year').onclick = function () {
-            that.interval = that.dateYear-1+'-'+that.dateMonth +'-'+that.dateDay+that.dateTo;
-            that.init(that.interval);
 
-        }
-        document.getElementById('allAll').onclick = function () {
-            that.interval = '1999-01-01&dateTo=2300-09-13';
-            that.init(that.interval);
+        let year: HTMLElement | null = document.getElementById('year');
+        if(year) {
+            year.onclick = function () {
+                that.interval = that.dateYear-1+'-'+that.dateMonth +'-'+that.dateDay+that.dateTo;
+                that.init(that.interval);
 
+            }
         }
-        document.getElementById('interval').onclick = function () {
-            let dateFrom = document.getElementById('dateFrom').value;
-            let dateTo = document.getElementById('dateTo').value;
-            that.interval = dateFrom+'&dateTo='+dateTo;
-            that.init(that.interval);
+
+        let allAll: HTMLElement |null = document.getElementById('allAll');
+        if(allAll) {
+        allAll.onclick = function () {
+                that.interval = '1999-01-01&dateTo=2300-09-13';
+                that.init(that.interval);
+
+            }
         }
+
+        let interval: HTMLElement |null = document.getElementById('interval');
+        if(interval) {
+            interval.onclick = function () {
+                let dateFrom = (document.getElementById('dateFrom')as HTMLInputElement).value;
+                let dateTo = (document.getElementById('dateTo')as HTMLInputElement).value;
+                that.interval = dateFrom+'&dateTo='+dateTo;
+                that.init(that.interval);
+            }
+        }
+
     }
 
     showChar(amountsExpense,dataExpense, context){
