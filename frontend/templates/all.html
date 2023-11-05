@@ -1,0 +1,49 @@
+    <div class="main" id="main">
+        <div class="name">Доходы и расходы</div>
+        <div class="buttons">
+            <button type="button" class="btn btn-success" id="createIncome">Создать доход</button>
+            <button type="button" class="btn btn-danger" id="createExpense">Создать расход</button>
+        </div>
+        <div class="information">
+            <div class="information-buttons">
+                <button type="button" class="btn btn-light btn-information" id="today">Сегодня</button>
+                <button type="button" class="btn btn-light btn-information" id="week">Неделя</button>
+                <button type="button" class="btn btn-light btn-information" id="month">Месяц</button>
+                <button type="button" class="btn btn-light btn-information" id="year">Год</button>
+                <button type="button" class="btn btn-light btn-information" id="allAll">Все</button>
+                <button type="button" class="btn btn-light btn-information" id="interval">Интервал</button>
+                <span>c</span>
+                <input id="dateFrom" type="text" class="btn btn-date" name="userDate"  min="1800-01-01" max="3000-12-31" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+                <span>по</span>
+                <input id="dateTo" type="text" class="btn btn-date" name="userDate"  min="1800-01-01" max="3000-12-31" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+            </div>
+        </div>
+        <table class="table text-center" id="table">
+            <thead>
+            <tr class="d-flex border-top">
+                <th style="width:13%" class="px-0 py-3 text-center border-0">№ операции</th>
+                <th style="width:13%" class="px-0 py-3 text-center border-0">Тип</th>
+                <th style="width:13%" class="px-0 py-3 text-center border-0">Категория</th>
+                <th style="width:13%" class="px-0 py-3 text-center border-0">Сумма</th>
+                <th style="width:13%" class="px-0 py-3 text-center border-0">Дата</th>
+                <th style="width:30%" class="ps-5 py-3 text-start border-0">Комментарий</th>
+                <th style="width:5%" class="ps-5 py-3 text-start border-0"></th>
+            </tr>
+            </thead>
+            <tbody class="tbody" id="tbody">
+
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <div class="popup-main">
+                <div class="popup-text">Вы действительно хотите удалить операцию?</div>
+            </div>
+            <button type="button" class="btn  btn-success" id="yes">Да, удалить</button>
+            <button type="button" class="btn btn-danger" id="no">Не удалять</button>
+        </div>
+    </div>

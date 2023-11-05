@@ -1,0 +1,31 @@
+<div class="main" id="main">
+    <div class="name" id="content-title">Главная</div>
+    <div class="information">
+        <div class="period  d-flex align-items-center mt-4 pb-2">
+            <button type="button" class="btn btn-light btn-information" id="today">Сегодня</button>
+            <button type="button" class="btn btn-light btn-information" id="week">Неделя</button>
+             <button type="button" class="btn btn-light btn-information" id="month">Месяц</button>
+            <button type="button" class="btn btn-light btn-information" id="year">Год</button>
+            <button type="button" class="btn btn-light btn-information" id="allAll">Все</button>
+            <button type="button" class="btn btn-light btn-information" id="interval">Интервал</button>
+            <span>c</span>
+            <input id="dateFrom" type="text" class="btn btn-date" name="userDate"  min="1800-01-01" max="3000-12-31" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+            <span>по</span>
+            <input id="dateTo" type="text" class="btn btn-date" name="userDate"  min="1800-01-01" max="3000-12-31" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+        </div>
+    <div class="row mt-5">
+    <div class="col-6 income1">
+        <p class="text-center title-diagram">Доходы</p>
+        <div class="diagram text-center mx-auto" id="canvas1">
+
+        </div>
+    </div>
+    <div class="col-6 expense1">
+        <p class="text-center title-diagram">Расходы</p>
+        <div class="diagram mx-auto" id="canvas2">
+
+        </div>
+    </div>
+</div>
+</div>
+</div>

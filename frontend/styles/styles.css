@@ -1,0 +1,243 @@
+@font-face {
+    font-weight: 400;
+    font-family: Roboto;
+    src: url("/../assets/fonts/Roboto.ttf");
+}
+@font-face {
+    font-weight: 500;
+    font-family: RobotoMedium;
+    src: url("/../assets/fonts/Robotomedium.ttf");
+}
+
+html,body{
+    font-family: "Roboto", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.layout {
+    display: flex;
+}
+
+li {
+    color: #052C65;
+    font-size: 14px;
+}
+.cat img {
+    margin-left: 71px;
+}
+
+.cat :focus {
+    background-color: rgba(13, 110, 253, 1);
+    color: white;
+    border-radius: 5px;
+    cursor: default;
+}
+
+.span :focus {
+    background-color: rgba(13, 110, 253, 1);
+    color: white;
+    border-radius: 5px;
+    cursor: default;
+}
+
+a :focus {
+    background-color: rgba(13, 110, 253, 1);
+    color: white;
+    border-radius: 5px;
+    cursor: default;
+}
+
+
+.tabs{
+    display: none;
+}
+.tabs_show {
+    display: block;
+    opacity: 0;
+    animation: ani 1s forwards;
+}
+
+.tabsButton {
+    width: 182px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+.entrance {
+    color: #052C65;
+    font-size: 40px;
+}
+
+.registration {
+    font-size: 12px;
+
+}
+
+.registration span {
+    font-weight: bold;
+}
+
+.sidebar {
+    display: flex;
+    height: 100vh;
+
+}
+
+.cash {
+color: #052C65;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+.btn {
+    margin-right: 10px;
+
+font-size: 16px;
+}
+
+.btn-information {
+    color:#6C757D;
+    border: 1px solid #6C757D;;
+}
+
+.btn:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.main {
+    padding: 100px 60px;
+}
+
+.name {
+    font-size: 40px;
+    color: #052C65;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.income-item {
+    width: 352px;
+    margin: 10px 0;
+
+}
+.card {
+    height: 121px;
+}
+
+.card-title {
+    font-size: 28px;
+    color: #290661;
+    line-height: 33px;
+}
+
+.income-new {
+    background-color: transparent;
+    border: transparent;
+    font-size: 28px;
+    line-height: 33px;
+    color: #CED4DA;
+    text-align: center;
+}
+
+.card-new {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-body {
+    flex: none;
+}
+
+.new-income-input {
+    width: 397px;
+    margin: 20px 0;
+}
+
+.information-buttons {
+    margin: 40px 0;
+}
+
+.btn-information {
+    width: 100px;
+    background-color: transparent;
+    border: 1px solid gray;
+}
+
+.btn-information:hover {
+    color: white;
+}
+
+.btn-date {
+    color: #6C757D;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.4);
+    padding-top: 400px;
+
+
+}
+
+.popup-content {
+    margin: 0 auto;
+    padding: 40px;
+    border: 1px solid gray;
+    max-width: 530px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: white;
+}
+
+.popup-main{
+    margin-bottom: 20px;
+}
+
+.popup-text{
+    font-size: 20px;
+    color: #290661;
+
+}
+
+.deleteAction {
+margin-right: 10px;
+}
+
+.logout{
+    text-align: center;
+    background-color: white;
+    width: 100px;
+    margin-top: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: none;
+    text-decoration: none;
+}
+
+.expense {
+    color: #DC3545 !important;
+}
+
+.income {
+color: #198754 !important;
+}
