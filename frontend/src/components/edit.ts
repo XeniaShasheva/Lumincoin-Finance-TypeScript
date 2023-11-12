@@ -3,30 +3,29 @@ import config from "../../config/config";
 import {UrlManager} from "../utils/url-manager";
 import {QueryParamsType} from "../types/query-params.type";
 import {EditAllType} from "../types/edit-all.type";
+import { CategoriesType } from "../types/categories.type";
 
 export class Edit {
     public routeParams: QueryParamsType;
-
-    private input: HTMLCollectionOf<Element>;
+    public categorie: CategoriesType | null;
+    public input: HTMLCollectionOf<any>;
     constructor() {
         this.routeParams = UrlManager.getQueryParams();
         this.init();
         this.input = document.getElementsByTagName('input');
+        this.categorie = null;
     }
 
    private async init(): Promise<void> {
         const that: Edit = this;
 
         try {
-            const response: EditAllType= await CustomHttp.request(config.host + '/operations/' + this.routeParams.id)
+            const result = await CustomHttp.request(config.host + '/operations/' + this.routeParams.id)
 
-            if (response) {
-                if (response.error) {
-                    throw new Error(response.message)
-                }
-                this.categorie = response;
-
-                this.input[0].value = this.categorie.type;
+            if (result) {
+                this.categorie = result;
+                if(this.categorie) {
+                   this.input[0].value = this.categorie.type;
                 if (this.categorie.type === 'income') {
                     this.input[0].value = 'доход'
                 }
@@ -40,7 +39,10 @@ export class Edit {
                 this.input[2].value = this.categorie.amount
                 this.input[3].value = this.categorie.date
                 this.input[4].value = this.categorie.comment
+ 
+                }
 
+                
             }
         } catch (error) {
             return console.log(error);

@@ -6,6 +6,8 @@ export class Sidebar {
     readonly collapsedLinks:HTMLElement|null;
     readonly incomeLink:HTMLElement|null;
     readonly expenseLink:HTMLElement|null;
+    private activeNavLink: Element | undefined;
+
 
 
     constructor() {
@@ -17,6 +19,7 @@ export class Sidebar {
         this.expenseLink = document.getElementById('expenseSidebar');
         this.init();
         this.active();
+        this.activeNavLink;
     }
 
 

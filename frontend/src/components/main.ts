@@ -6,7 +6,7 @@ export class Main{
     private Month: Number;
     readonly dateInterval: String;
     private dateTo: String;
-    private dateYear: any;
+    private dateYear: number;
     private dateMonth: String;
     private dateDay: String;
     private canvasIncome: HTMLElement | null;
@@ -19,10 +19,10 @@ export class Main{
     private amountsIncome:[];
     private dataExpense: [];
     private amountsExpense:[];
-    private interval: any;
+    private interval: String | undefined;
 
     constructor(){
-        let button: NodeListOf<any> = document.querySelectorAll('.btn-information')
+        let button: NodeListOf<HTMLElement> = document.querySelectorAll('.btn-information')
         button.forEach((itm)=>{
             itm.addEventListener('click', function(){
                 button.forEach((btn)=>{
@@ -39,7 +39,7 @@ export class Main{
         this.dateInterval = new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString()
             + '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
         this.dateTo = '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
-        this.dateYear = new Date().getFullYear().toString();
+        this.dateYear = new Date().getFullYear();
         this.dateMonth = this.Month.toString();
         this.dateDay = new Date().getDate().toString();
         this.canvasIncome = null;
@@ -68,10 +68,15 @@ export class Main{
                 (document.getElementById('canvas1')as HTMLElement).innerHTML = `<canvas class="" id="income"></canvas>`;
                 (document.getElementById('canvas2')as HTMLElement).innerHTML = `<canvas  id="expense"></canvas>`;
 
-                this.canvasIncome = document.getElementById('income');
-                this.contextIncome = this.canvasIncome.getContext('2d');
+                if(this.canvasIncome) {
+                  this.contextIncome = this.canvasIncome.getContext('2d');  
+                }
                 this.canvasExpense = document.getElementById('expense');
-                this.contextExpense = this.canvasExpense.getContext('2d');
+                if (this.canvasExpense) {
+                     this.contextExpense = this.canvasExpense.getContext('2d');
+                }                                   
+                this.canvasIncome = document.getElementById('income');
+              
 
                 this.dataExpense =[];
                 this.amountsExpense = [];
@@ -86,12 +91,15 @@ export class Main{
         }
     }
     private canvas(): void{
-        for(let i =0; i<this.result.length;i++){
+        if(this.result) {
+            for(let i =0; i<this.result.length;i++){
             if(this.result[i].type === 'expense'){
                 this.expense.push(this.result[i]);
             }else{
                 this.income.push(this.result[i]);
-            }
+            } 
+        }
+       
         }
 
         this.sort('expense',this.expense);
@@ -160,7 +168,7 @@ export class Main{
 
     }
 
-    private showChar(amountsExpense,dataExpense, context): void{
+    private showChar(amountsExpense: number,dataExpense: string, context: string): void{
         let data  = {
             labels: dataExpense,
             datasets:[{
@@ -179,11 +187,11 @@ export class Main{
                 }
             },
         }
-        let chart = new Chart(context,config);
+        // let chart = new Chart(context,config);
     }
 
-    private sort(type,arr): void{
-        let holder = {};
+    private sort(type: string,arr:[]): void{
+        let holder: object = {};
         arr.forEach(function(d) {
             if (holder.hasOwnProperty(d.category)) {
                 holder[d.category] = holder[d.category] + d.amount;
@@ -192,7 +200,7 @@ export class Main{
             }
         });
 
-        let sameComsart = [];
+        let sameComsart: {}[] = [];
         for (let prop in holder) {
             sameComsart.push({ category: prop, amount: holder[prop] });
         }

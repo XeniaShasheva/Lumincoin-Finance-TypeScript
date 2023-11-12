@@ -3,20 +3,20 @@ import config from "../../config/config";
 
 
 export class All {
-  private interval: any;
-  private all = [];
+  private interval: String | undefined;
+  private all: Array<any> | null;
   private yesElement: HTMLElement |null;
   private noElement: HTMLElement |null;
-  private data: HTMLElement |null;
+  private data: Array<any> | null;
   private Month: Number;
   private dateInterval: String;
   private dateTo: String;
-  private dateYear: any;
+  private dateYear: number;
   private dateMonth: String;
   private dateDay: String;
 
     constructor() {
-        let button: NodeListOf<any> = document.querySelectorAll('.btn-information')
+        let button: NodeListOf<HTMLElement> = document.querySelectorAll('.btn-information')
         button.forEach((item)=>{
             item.addEventListener('click', function(){
                 button.forEach((btn)=>{
@@ -27,6 +27,7 @@ export class All {
                 this.style.color='white'
             })
         })
+        this.interval;
         this.all = [];
         this.init();
         this.yesElement = null;
@@ -37,9 +38,10 @@ export class All {
         this.dateInterval = new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString()
             + '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
         this.dateTo = '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
-        this.dateYear = new Date().getFullYear().toString();
+        this.dateYear = new Date().getFullYear();
         this.dateMonth = this.Month.toString();
         this.dateDay = new Date().getDate().toString();
+        
 
     }
 
@@ -65,10 +67,10 @@ export class All {
 
 
     private allProcess():void {
-        const that = this;
+        const that: All = this;
         const result = document.getElementById('tbody')
         let content = ''
-
+        if(this.data){
         this.data.forEach((item, index) => {
             content += `<tr class="d-flex border-top" scope="row" id='${item.id}'>
             <td style="width:13%" class=" px-0 text-center">${index + 1}</td>
@@ -94,8 +96,11 @@ export class All {
             </td>
         </tr>`
         })
+    }
+    if(result){
         result.innerHTML = content;
-        let createIncome: HTMLElement | null = document.getElementById('createIncome');
+    }
+            let createIncome: HTMLElement | null = document.getElementById('createIncome');
         if(createIncome) {
             createIncome.onclick  = function () {
                 that.createIncome(this);
@@ -189,14 +194,14 @@ export class All {
         for(let i=0;i<deleteElms.length;i++) {
             deleteElms[i].addEventListener('click', function (e) {
                 if (e) {
-                    that.deleteActions(this);
+                    that.deleteActions(<HTMLElement>this);
                 }
 
             })
         }
     }
 
-    private deleteActions(item): void {
+    private deleteActions(item: HTMLElement): void {
         const that = this;
         let popup: HTMLElement | null = document.getElementById('popup');
         if(popup) {
