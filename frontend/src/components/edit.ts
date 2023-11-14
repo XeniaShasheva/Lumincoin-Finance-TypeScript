@@ -51,7 +51,7 @@ export class Edit {
         const create: HTMLElement|null = document.getElementById('create');
         if(create) {
             create.onclick = function () {
-                that.create(this);
+                that.create();
             }
         }
 

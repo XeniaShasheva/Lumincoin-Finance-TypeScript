@@ -6,15 +6,15 @@ import { CategoriesType } from "../types/categories.type";
 export class New {
     readonly page: 'createIncome' |'createExpense';
     private categories: CategoriesType[] | null;
-    private input: HTMLCollectionOf<any>;
-    private itmType: HTMLCollectionOf<Element>;
+    private input: HTMLCollectionOf<Element>;
+    private itmType:HTMLCollectionOf<Element>;
     private id: string;
 
     constructor(page: 'createIncome' |'createExpense'){
         this.page = page;
         this.categories = null
-        this.input = document.getElementsByTagName('input')
-        this.itmType = document.getElementsByClassName('dropdown-item')
+        this.input = document.getElementsByTagName('input');
+        this.itmType = document.getElementsByClassName('dropdown-item');
         this.id = document.location.href.split('=')[1]
 
         if(this.page === 'createIncome'){
@@ -26,7 +26,7 @@ export class New {
 
         const that = this
         for(let i = 0; i < this.input.length; i ++){
-            this.input[i].onchange = function(){
+            (this.input[i] as HTMLInputElement).onchange = function(){
                 that.validateForm();
             }
         }
@@ -41,7 +41,7 @@ export class New {
         let that = this
         if(create){
             create.onclick = function ():void {
-                that.savingData(that.saveCategor(that.input[1].value),'income','/operations','POST');
+                that.savingData(that.saveCategor((that.input[1] as HTMLInputElement).value),('income' as any),'/operations','POST');
             }
         }
 
@@ -53,7 +53,7 @@ export class New {
         let that = this
         if(create) {
             create.onclick = function ():void {
-                that.savingData(that.saveCategor(that.input[1].value),'expense','/operations','POST')
+                that.savingData(that.saveCategor((that.input[1]as HTMLInputElement).value),('expense' as any),'/operations','POST')
             }
         }
     }
@@ -74,8 +74,8 @@ export class New {
         }
     }
     private showTitle(text: string, type: string): void{
-        let input = this.input[0]
-        (document.getElementById('content-title')as HTMLElement).innerText = text
+        let input = this.input[0] as HTMLInputElement;
+        (document.getElementById('content-title')as HTMLElement).innerText = text;
         input.value = type;
         input.setAttribute('disabled', 'disabled')
     }
@@ -96,9 +96,9 @@ export class New {
         }
             if(result) {
             result.innerHTML = content
-            for(let i = 0; i<this.itmType.length;i++){
-                this.itmType[i].onclick = function () {
-                    that.input[1].value = that.itmType[i].textContent
+            for(let i = 0; i < this.itmType.length; i++ ){
+                (this.itmType[i]as HTMLElement).onclick = function () {
+                    (that.input[1]as any).value = that.itmType[i].textContent
 
                 }
             }
@@ -106,12 +106,12 @@ export class New {
 
     }
     private validateForm(): void{
-        let that =this
+        let that = this;
         let create: HTMLElement | null = document.getElementById('create')
 
         let y: boolean = false
-        for(let i = 0;i<this.input.length-1;i++){
-            if(!that.input[i].value){
+        for(let i = 0; i < this.input.length -1; i++ ){
+            if((!that.input[i]as any).value){
                 y = false
                 return
             }else{
@@ -131,9 +131,9 @@ export class New {
         try{
             const result = await CustomHttp.request(config.host + url,metod,{
                 type: type,
-                amount: this.input[2].value,
-                date: this.input[3].value,
-                comment: this.input[4].value,
+                amount: (this.input[2]as HTMLInputElement).value,
+                date: (this.input[3]as HTMLInputElement).value,
+                comment: (this.input[4]as HTMLInputElement).value,
                 category_id:  Number(id)
             })
 

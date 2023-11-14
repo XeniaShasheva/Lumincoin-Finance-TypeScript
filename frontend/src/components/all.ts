@@ -103,14 +103,14 @@ export class All {
             let createIncome: HTMLElement | null = document.getElementById('createIncome');
         if(createIncome) {
             createIncome.onclick  = function () {
-                that.createIncome(this);
+                that.createIncome();
             }
         }
 
         let createExpense: HTMLElement | null = document.getElementById('createExpense');
         if(createExpense) {
             createExpense.onclick = function () {
-                that.createExpense(this);
+                that.createExpense();
             }
         }
     }
@@ -188,20 +188,18 @@ export class All {
     }
 
 
-    private delete(): void {
+    public delete(): void {
         const that = this;
         let deleteElms =  document.getElementsByClassName('delete');
         for(let i=0;i<deleteElms.length;i++) {
-            deleteElms[i].addEventListener('click', function (e) {
-                if (e) {
-                    that.deleteActions(<HTMLElement>this);
-                }
-
+            deleteElms[i].addEventListener('click', function (this: any) {
+                            that.deleteActions(this);
+                
             })
         }
     }
 
-    private deleteActions(item: HTMLElement): void {
+    private deleteActions(item:any): void {
         const that = this;
         let popup: HTMLElement | null = document.getElementById('popup');
         if(popup) {

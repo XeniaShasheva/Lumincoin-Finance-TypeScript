@@ -1,24 +1,25 @@
 import {CustomHttp} from "../services/custom-http";
 import config from "../../config/config";
+import { CategoriesType } from "../types/categories.type";
 
 export class Main{
-    private result: HTMLElement | null;
-    private Month: Number;
+    private result: [] | null;
+    private Month: number;
     readonly dateInterval: String;
     private dateTo: String;
     private dateYear: number;
     private dateMonth: String;
     private dateDay: String;
-    private canvasIncome: HTMLElement | null;
-    private contextIncome: HTMLElement | null;
-    private canvasExpense: HTMLElement | null;
-    private contextExpense: HTMLElement | null;
+    private canvasIncome: HTMLCanvasElement | null;
+    private contextIncome: CanvasRenderingContext2D | null;
+    private canvasExpense: HTMLCanvasElement | null;
+    private contextExpense: CanvasRenderingContext2D | null;
     private expense: [];
     private income: [];
     private dataIncome: [];
-    private amountsIncome:[];
+    private amountsIncome:number[];
     private dataExpense: [];
-    private amountsExpense:[];
+    private amountsExpense: [];
     private interval: String | undefined;
 
     constructor(){
@@ -63,19 +64,23 @@ export class Main{
                 }
                 this.result = result;
 
-                (document.getElementById('canvas1')as HTMLElement).innerHTML = ``
-                (document.getElementById('canvas2')as HTMLElement).innerHTML = ``
+                let canvas1: HTMLElement | null = document.getElementById('canvas1');
+                let canvas2: HTMLElement | null = document.getElementById('canvas2');
+                if (canvas1 && canvas2) {
+                    canvas1.innerHTML = ``;
+                    canvas2.innerHTML = ``;
+                }
                 (document.getElementById('canvas1')as HTMLElement).innerHTML = `<canvas class="" id="income"></canvas>`;
                 (document.getElementById('canvas2')as HTMLElement).innerHTML = `<canvas  id="expense"></canvas>`;
 
                 if(this.canvasIncome) {
                   this.contextIncome = this.canvasIncome.getContext('2d');  
                 }
-                this.canvasExpense = document.getElementById('expense');
+                this.canvasExpense = document.getElementById('expense') as HTMLCanvasElement;
                 if (this.canvasExpense) {
                      this.contextExpense = this.canvasExpense.getContext('2d');
                 }                                   
-                this.canvasIncome = document.getElementById('income');
+                this.canvasIncome = document.getElementById('income') as HTMLCanvasElement;
               
 
                 this.dataExpense =[];
@@ -92,8 +97,8 @@ export class Main{
     }
     private canvas(): void{
         if(this.result) {
-            for(let i =0; i<this.result.length;i++){
-            if(this.result[i].type === 'expense'){
+            for(let i =0; i <this.result.length ;i++ ){
+            if((this.result[i]as any).type === 'expense'){
                 this.expense.push(this.result[i]);
             }else{
                 this.income.push(this.result[i]);
@@ -168,7 +173,7 @@ export class Main{
 
     }
 
-    private showChar(amountsExpense: number,dataExpense: string, context: string): void{
+    private showChar(amountsExpense: number[],dataExpense: string[], context: CanvasRenderingContext2D | null): void{
         let data  = {
             labels: dataExpense,
             datasets:[{
@@ -190,28 +195,27 @@ export class Main{
         // let chart = new Chart(context,config);
     }
 
-    private sort(type: string,arr:[]): void{
-        let holder: object = {};
-        arr.forEach(function(d) {
-            if (holder.hasOwnProperty(d.category)) {
-                holder[d.category] = holder[d.category] + d.amount;
+    private sort(type: string, array:CategoriesType[]): void{
+        let sort: Record<string, number>  = {};
+        array.forEach(function(d: CategoriesType): void {
+            if (sort.hasOwnProperty(d.category)) {
+                sort[d.category] = sort[d.category] + d.amount;
             } else {
-                holder[d.category] = d.amount;
+                sort[d.category] = d.amount;
             }
         });
 
-        let sameComsart: {}[] = [];
-        for (let prop in holder) {
-            sameComsart.push({ category: prop, amount: holder[prop] });
+        let sortSort: object[] = [];
+            for (let prop in sort) {
+                sortSort.push({ category: prop, amount: sort[prop]});
         }
-
-        for(let i =0; i<sameComsart.length;i++){
+        for(let i =0; i < sortSort.length; i++ ){
             if(type === 'expense'){
-                this.dataExpense.push(sameComsart[i].category);
-                this.amountsExpense.push(sameComsart[i].amount);
+                this.dataExpense.push(sortSort[i].category);
+                this.amountsExpense.push(sortSort[i].amount);
             } else if(type === 'income'){
-                this.dataIncome.push(sameComsart[i].category);
-                this.amountsIncome.push(sameComsart[i].amount);
+                this.dataIncome.push(sortSort[i].category);
+                this.amountsIncome.push(sortSort[i].amount);
             }
         }
 
