@@ -1,8 +1,9 @@
 import { CustomHttp } from "../services/custom-http";
 import configs from "../../config/config"
+import { BalanceType } from "../types/balance.type";
 
 export class Balance {
-    private data: HTMLElement |null;
+    private data: BalanceType |null;
 
     constructor(){
         this.data = null
