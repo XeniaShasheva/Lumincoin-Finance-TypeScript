@@ -1,17 +1,19 @@
 import {Auth} from "./auth";
 
 export class CustomHttp {
-   public static async request(url: string, method: string = "GET", body: any = null): Promise<any> {
+   public static async request(url: string, method: string = "GET", body: object | null = null): Promise<any> {
         const params: any = {
             method: method,
             headers: {
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
-            }
+                
+            } 
         };
         let token = localStorage.getItem(Auth.accessTokenKey);
         if (token) {
-            params.headers['x-auth-token'] = token;
+        
+        params.headers['x-auth-token'] = token;
         }
 
         if (body) {

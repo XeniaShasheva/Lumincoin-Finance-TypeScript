@@ -1,9 +1,9 @@
 import {CustomHttp} from "../services/custom-http";
 import config from "../../config/config";
-import { CategoriesType } from "../types/categories.type";
+import { MainType } from "../types/main.type";
 
 export class Main{
-    private result: [] | null;
+    private result: MainType[] | null;
     private Month: number;
     readonly dateInterval: String;
     private dateTo: String;
@@ -14,13 +14,14 @@ export class Main{
     private contextIncome: CanvasRenderingContext2D | null;
     private canvasExpense: HTMLCanvasElement | null;
     private contextExpense: CanvasRenderingContext2D | null;
-    private expense: [];
-    private income: [];
-    private dataIncome: [];
+    private expense: MainType[];
+    private income: MainType[];
+    private dataIncome: string[];
     private amountsIncome:number[];
-    private dataExpense: [];
-    private amountsExpense: [];
+    private dataExpense: string[];
+    private amountsExpense: number[];
     private interval: String | undefined;
+   
 
     constructor(){
         let button: NodeListOf<HTMLElement> = document.querySelectorAll('.btn-information')
@@ -38,8 +39,8 @@ export class Main{
         this.result = null;
         this.Month = new Date().getMonth() + 1;
         this.dateInterval = new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString()
-            + '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
-        this.dateTo = '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
+            + '&dateTo=' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
+        this.dateTo = '&dateTo=' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
         this.dateYear = new Date().getFullYear();
         this.dateMonth = this.Month.toString();
         this.dateDay = new Date().getDate().toString();
@@ -71,8 +72,8 @@ export class Main{
                     canvas2.innerHTML = ``;
                 }
                 (document.getElementById('canvas1')as HTMLElement).innerHTML = `<canvas class="" id="income"></canvas>`;
-                (document.getElementById('canvas2')as HTMLElement).innerHTML = `<canvas  id="expense"></canvas>`;
-
+                (document.getElementById('canvas2')as HTMLElement).innerHTML = `<canvas class="" id="expense"></canvas>`;
+                this.canvasIncome = document.getElementById('income') as HTMLCanvasElement;
                 if(this.canvasIncome) {
                   this.contextIncome = this.canvasIncome.getContext('2d');  
                 }
@@ -80,7 +81,7 @@ export class Main{
                 if (this.canvasExpense) {
                      this.contextExpense = this.canvasExpense.getContext('2d');
                 }                                   
-                this.canvasIncome = document.getElementById('income') as HTMLCanvasElement;
+               
               
 
                 this.dataExpense =[];
@@ -95,10 +96,10 @@ export class Main{
             console.log(error);
         }
     }
-    private canvas(): void{
+    private canvas() {
         if(this.result) {
             for(let i =0; i <this.result.length ;i++ ){
-            if((this.result[i]as any).type === 'expense'){
+            if(this.result[i].type === 'expense'){
                 this.expense.push(this.result[i]);
             }else{
                 this.income.push(this.result[i]);
@@ -173,7 +174,7 @@ export class Main{
 
     }
 
-    private showChar(amountsExpense: number[],dataExpense: string[], context: CanvasRenderingContext2D | null): void{
+    private showChar(amountsExpense: number[],dataExpense: string[], context: CanvasRenderingContext2D | null){
         let data  = {
             labels: dataExpense,
             datasets:[{
@@ -192,24 +193,20 @@ export class Main{
                 }
             },
         }
-        // let chart = new Chart(context,config);
+        let chart = new Chart(context,config);
     }
 
-    private sort(type: string, array:CategoriesType[]): void{
-        let sort: Record<string, number>  = {};
-        array.forEach(function(d: CategoriesType): void {
-            if (sort.hasOwnProperty(d.category)) {
-                sort[d.category] = sort[d.category] + d.amount;
-            } else {
-                sort[d.category] = d.amount;
-            }
-        });
-
-        let sortSort: object[] = [];
-            for (let prop in sort) {
-                sortSort.push({ category: prop, amount: sort[prop]});
-        }
-        for(let i =0; i < sortSort.length; i++ ){
+    private sort(type: 'expense' | 'income', array:MainType[]): void{
+        let sort: Record<string, number>  = array.reduce((acc, d) => {
+            acc[d.category] = (acc[d.category] || 0) + d.amount;
+            return acc;
+                }, {} as Record <string, number>);
+        let sortSort: {category: string; amount: number}[] = 
+        Object.entries(sort).map(([category, amount]) => ({
+            category,
+            amount
+        }));
+        for(let i = 0; i < sortSort.length; i++ ){
             if(type === 'expense'){
                 this.dataExpense.push(sortSort[i].category);
                 this.amountsExpense.push(sortSort[i].amount);

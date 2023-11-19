@@ -4,10 +4,10 @@ import config from "../../config/config";
 
 export class All {
   private interval: String | undefined;
-  private all: Array<any> | null;
+// private all: Array<any> | null;
   private yesElement: HTMLElement |null;
   private noElement: HTMLElement |null;
-  private data: Array<any> | null;
+  private data: {category: number, type: string, id: number, amount: number, date: string, comment:string}[] | null;
   private Month: Number;
   private dateInterval: String;
   private dateTo: String;
@@ -28,7 +28,7 @@ export class All {
             })
         })
         this.interval;
-        this.all = [];
+        // this.all = [];
         this.init();
         this.yesElement = null;
         this.noElement = null;
@@ -36,8 +36,8 @@ export class All {
         this.data = null
         this.Month = new Date().getMonth() + 1;
         this.dateInterval = new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString()
-            + '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
-        this.dateTo = '&dateTo' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
+            + '&dateTo=' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
+        this.dateTo = '&dateTo=' + new Date().getFullYear().toString() + '-' + this.Month.toString() + '-' + new Date().getDate().toString();
         this.dateYear = new Date().getFullYear();
         this.dateMonth = this.Month.toString();
         this.dateDay = new Date().getDate().toString();
@@ -160,7 +160,7 @@ export class All {
         let year: HTMLElement | null = document.getElementById('year');
         if(year) {
             year.onclick = function () {
-                that.interval = that.dateYear - 1 + '-' + that.dateMonth + '-' + that.dateDay + that.dateTo
+                that.interval = (that.dateYear - 1).toString() + '-' + that.dateMonth + '-' + that.dateDay + that.dateTo
                 that.init(that.interval);
             }
         }
@@ -179,7 +179,7 @@ export class All {
                 let dateFrom = (document.getElementById('dateFrom')as HTMLInputElement).value;
                 let dateTo = (document.getElementById('dateTo')as HTMLInputElement).value;
 
-                that.interval = dateFrom + '&dateTo=' + dateTo
+                that.interval = dateFrom + '&dateFrom=' + dateTo + '&dateTo='
                 that.init(that.interval);
             }
         }
@@ -192,14 +192,14 @@ export class All {
         const that = this;
         let deleteElms =  document.getElementsByClassName('delete');
         for(let i=0;i<deleteElms.length;i++) {
-            deleteElms[i].addEventListener('click', function (this: any) {
+            deleteElms[i].addEventListener('click', function (this:HTMLElement) {
                             that.deleteActions(this);
                 
             })
         }
     }
 
-    private deleteActions(item:any): void {
+    private deleteActions(item: HTMLElement): void {
         const that = this;
         let popup: HTMLElement | null = document.getElementById('popup');
         if(popup) {

@@ -8,7 +8,7 @@ import { CategoriesType } from "../types/categories.type";
 export class Edit {
     public routeParams: QueryParamsType;
     public categorie: CategoriesType | null;
-    public input: HTMLCollectionOf<any>;
+    public input: HTMLCollectionOf<HTMLInputElement>;
     constructor() {
         this.routeParams = UrlManager.getQueryParams();
         this.init();
@@ -36,7 +36,7 @@ export class Edit {
                 this.input[0].setAttribute('disabled', 'disabled');
                 this.input[1].setAttribute('disabled', 'disabled');
                 this.input[1].value = this.categorie.category
-                this.input[2].value = this.categorie.amount
+                this.input[2].value= this.categorie.amount
                 this.input[3].value = this.categorie.date
                 this.input[4].value = this.categorie.comment
  

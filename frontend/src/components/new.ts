@@ -6,7 +6,7 @@ import { CategoriesType } from "../types/categories.type";
 export class New {
     readonly page: 'createIncome' |'createExpense';
     private categories: CategoriesType[] | null;
-    private input: HTMLCollectionOf<Element>;
+    private input: HTMLCollectionOf<HTMLInputElement>;
     private itmType:HTMLCollectionOf<Element>;
     private id: string;
 
@@ -98,8 +98,9 @@ export class New {
             result.innerHTML = content
             for(let i = 0; i < this.itmType.length; i++ ){
                 (this.itmType[i]as HTMLElement).onclick = function () {
-                    (that.input[1]as any).value = that.itmType[i].textContent
-
+                    if(!that.input[1]) {
+                        that.input[1].value= that.itmType[i].textContent
+                    }
                 }
             }
         }
@@ -111,7 +112,7 @@ export class New {
 
         let y: boolean = false
         for(let i = 0; i < this.input.length -1; i++ ){
-            if((!that.input[i]as any).value){
+            if(!that.input[i].value){
                 y = false
                 return
             }else{
@@ -146,18 +147,17 @@ export class New {
         }
     }
 
-    private saveCategor(type:string): number{
-        let idcategor: any = null;
-if(this.categories) {
-    for(let i = 0; i < this.categories.length; i++){
-            if(this.categories[i].title === type){
-                idcategor= this.categories[i].id
-                break
-            }
+    private saveCategor(type:string): number {
+        let idcategor: number | null = null;
+               if(this.categories) {
+                for(let i = 0; i < this.categories.length; i++){
+                if(this.categories[i].title === type){
+                    idcategor = this.categories[i].id
+                    break
+                }
+            }           
         }
-}
-        
-        return idcategor
+       return idcategor
     }
 
 }

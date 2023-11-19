@@ -1,4 +1,4 @@
 export type BalanceType = {
-    user_id: number,
+    // user_id: number,
     balance: number
 }

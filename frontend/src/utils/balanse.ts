@@ -12,7 +12,7 @@ export class Balance {
 
     async init(){
         try{
-            const result = await CustomHttp.request(configs.host+'/balance')
+            const result = await CustomHttp.request(configs.host + '/balance')
             if(result){
                 if(result.error){
                     throw new Error(result.message)
