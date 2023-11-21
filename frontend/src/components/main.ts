@@ -1,6 +1,7 @@
 import {CustomHttp} from "../services/custom-http";
 import config from "../../config/config";
 import { MainType } from "../types/main.type";
+import { Chart, ChartConfiguration, ChartTypeRegistry, registerables } from "chart.js/auto";
 
 export class Main{
     private result: MainType[] | null;
@@ -174,15 +175,21 @@ export class Main{
 
     }
 
-    private showChar(amountsExpense: number[],dataExpense: string[], context: CanvasRenderingContext2D | null){
-        let data  = {
+    private showChar(
+        amountsExpense: number[],
+        dataExpense: string[], 
+        context: CanvasRenderingContext2D | null){
+            
+        if(context) {
+          let data  = {
             labels: dataExpense,
             datasets:[{
                 data: amountsExpense,
             }]
         }
-        let config = {
-            type: 'pie',
+
+        let config: ChartConfiguration<keyof ChartTypeRegistry> = {
+             type: "pie",
             data: data,
             options: {
                 responsive: true,
@@ -193,7 +200,9 @@ export class Main{
                 }
             },
         }
-        let chart = new Chart(context,config);
+        let chart = new Chart(context, config);  
+        }
+        
     }
 
     private sort(type: 'expense' | 'income', array:MainType[]): void{

@@ -88,7 +88,7 @@ export class New {
     private searchType(): void{
         let that =this
         const result: HTMLElement | null = document.getElementById('dropdown-menu')
-        let content = ''
+        let content: string = ''
         if(this.categories) {
              this.categories.forEach((itm)=>{
             content +=`<li><div class="dropdown-item" id='${itm.id}'>${itm.title}</div></li>`
@@ -98,8 +98,8 @@ export class New {
             result.innerHTML = content
             for(let i = 0; i < this.itmType.length; i++ ){
                 (this.itmType[i]as HTMLElement).onclick = function () {
-                    if(!that.input[1]) {
-                        that.input[1].value= that.itmType[i].textContent
+                    if(that.itmType) {
+                        that.input[1].value = (that.itmType[i]as HTMLElement).textContent as string
                     }
                 }
             }
@@ -148,7 +148,7 @@ export class New {
     }
 
     private saveCategor(type:string): number {
-        let idcategor: number | null = null;
+        let idcategor: number = 0;
                if(this.categories) {
                 for(let i = 0; i < this.categories.length; i++){
                 if(this.categories[i].title === type){
